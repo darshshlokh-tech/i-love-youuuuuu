@@ -8,6 +8,15 @@
 <meta name="format-detection" content="telephone=no">
 <title>Anousha</title>
 
+<!-- Link previews / sharing. Replace og:image with an ABSOLUTE https URL once deployed. -->
+<meta name="description" content="A little neon-lit love letter for Anousha.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Anousha">
+<meta property="og:description" content="A little neon-lit love letter for Anousha.">
+<meta property="og:image" content="anousha.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@600&family=Outfit:wght@200;300;400&family=Orbitron:wght@500&display=swap" rel="stylesheet">
@@ -48,7 +57,6 @@
     font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-weight: 300;
     line-height: 1.75;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
   }
@@ -161,22 +169,28 @@
     pointer-events: none;
   }
 
-  .card > *{
-    opacity: 0;
-    animation: rise .85s cubic-bezier(.2, .7, .3, 1) forwards;
+  /* Content is VISIBLE by default — animation is pure enhancement.
+     Adding a new child can never leave it stuck at opacity:0. */
+  .card > *{ opacity: 1; }
+
+  @media (prefers-reduced-motion: no-preference){
+    .card > *{
+      animation: rise .85s cubic-bezier(.2, .7, .3, 1) both;
+    }
+    /* Children beyond #12 simply use the default 0s delay — still visible. */
+    .card > *:nth-child(1) { animation-delay: .05s; }
+    .card > *:nth-child(2) { animation-delay: .14s; }
+    .card > *:nth-child(3) { animation-delay: .23s; }
+    .card > *:nth-child(4) { animation-delay: .32s; }
+    .card > *:nth-child(5) { animation-delay: .41s; }
+    .card > *:nth-child(6) { animation-delay: .50s; }
+    .card > *:nth-child(7) { animation-delay: .59s; }
+    .card > *:nth-child(8) { animation-delay: .68s; }
+    .card > *:nth-child(9) { animation-delay: .77s; }
+    .card > *:nth-child(10){ animation-delay: .86s; }
+    .card > *:nth-child(11){ animation-delay: .95s; }
+    .card > *:nth-child(12){ animation-delay: 1.04s; }
   }
-  .card > *:nth-child(1){ animation-delay: .05s; }
-  .card > *:nth-child(2){ animation-delay: .14s; }
-  .card > *:nth-child(3){ animation-delay: .23s; }
-  .card > *:nth-child(4){ animation-delay: .32s; }
-  .card > *:nth-child(5){ animation-delay: .41s; }
-  .card > *:nth-child(6){ animation-delay: .50s; }
-  .card > *:nth-child(7){ animation-delay: .59s; }
-  .card > *:nth-child(8){ animation-delay: .68s; }
-  .card > *:nth-child(9){ animation-delay: .77s; }
-  .card > *:nth-child(10){ animation-delay: .86s; }
-  .card > *:nth-child(11){ animation-delay: .95s; }
-  .card > *:nth-child(12){ animation-delay: 1.04s; }
 
   @keyframes rise{
     from{ opacity: 0; transform: translateY(16px); }
@@ -272,7 +286,6 @@
     aspect-ratio: 1 / 1;
     overflow: hidden;
     clip-path: url(#heartClip);
-    -webkit-clip-path: url(#heartClip);
     background:
       radial-gradient(circle at 50% 38%,
         rgba(255, 45, 149, .55) 0%,
@@ -280,13 +293,28 @@
         rgba(10, 2, 10, .96) 100%);
   }
 
+  /* Painted behind the <img>: shows only if the photo is missing/broken. */
+  .heart::before{
+    content: "♥";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(255, 45, 149, .30);
+    text-shadow: 0 0 34px rgba(255, 45, 149, .55);
+  }
+
   .heart img{
+    position: relative;
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* This keeps your face centered in the heart shape */
-    object-position: center 25%; 
+    /* Keeps the face centered in the heart shape */
+    object-position: center 25%;
     filter: saturate(1.06) contrast(1.04) brightness(.97);
     transform: scale(1.02);
     transition: transform .6s cubic-bezier(.2, .7, .3, 1), filter .6s ease;
@@ -459,8 +487,9 @@
     .heartline{ font-size: 1.18rem; }
     .note p{ font-size: 1rem; line-height: 1.75; }
     .joke{ font-size: 1.14rem; }
-    .eyebrow{ font-size: 9px; letter-spacing: .3em; }
-    .subtitle{ font-size: .68rem; letter-spacing: .12em; }
+    /* Small-type legibility bump on phones */
+    .eyebrow{ font-size: 11px; letter-spacing: .2em; }
+    .subtitle{ font-size: .72rem; letter-spacing: .14em; }
     .signature{ font-size: 1.8rem; }
     .song-label{ font-size: .82rem; letter-spacing: .22em; }
     .song-embed iframe{ height: 300px; }
@@ -474,6 +503,7 @@
     .heartline{ font-size: 1.08rem; }
     .note p{ font-size: .96rem; }
     .joke{ font-size: 1.06rem; }
+    .eyebrow{ font-size: 10px; letter-spacing: .16em; }
     .song-embed iframe{ height: 260px; }
   }
 
@@ -483,7 +513,6 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .card > *{ animation: none; opacity: 1; }
     h1{ animation: none; }
     .grid{ animation: none; }
     .orbs span{ animation: none; opacity: .35; }
@@ -522,7 +551,7 @@
   <main class="scene">
     <article class="card" id="card">
 
-      <p class="eyebrow">I LOVE YOU FOREVER AND ALWAYS <3</p>
+      <p class="eyebrow">I LOVE YOU FOREVER AND ALWAYS</p>
 
       <h1>Anousha</h1>
       <p class="subtitle">I love you (for the record, don't mind the CSS :))</p>
@@ -530,8 +559,12 @@
       <figure class="photo">
         <div class="heart-glow">
           <div class="heart">
-            <!-- CHANGE THE NAME BELOW IF YOUR FILE IS NAMED DIFFERENTLY (e.g. anousha.png) -->
-            <img src="anousha.jpg" alt="Anousha">
+            <!-- Change the filename if yours differs (e.g. anousha.png).
+                 If the file is missing, it removes itself and the ♥ backdrop shows. -->
+            <img src="anousha.jpg"
+                 alt="Portrait of Anousha"
+                 decoding="async"
+                 onerror="this.remove()">
           </div>
         </div>
 
@@ -563,13 +596,12 @@
 
       <div class="divider" aria-hidden="true">♥</div>
 
-      <p class="song-label">This Reminds me of you &lt;3</p>
+      <p class="song-label">This reminds me of you &lt;3</p>
 
       <div class="song-embed">
         <iframe
-          data-testid="embed-iframe"
           style="border-radius:12px"
-          src="https://open.spotify.com/embed/track/2psRActEWsTlYYd7EDoyVR?utm_source=generator&si=4d1f5c264f6d40ec"
+          src="https://open.spotify.com/embed/track/2psRActEWsTlYYd7EDoyVR?utm_source=generator"
           width="100%"
           height="352"
           frameborder="0"
@@ -591,21 +623,46 @@
       const card  = document.getElementById('card');
       const scene = document.querySelector('.scene');
       if (!card || !scene) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.matchMedia('(hover: none)').matches) return;
-      if (window.matchMedia('(pointer: coarse)').matches) return;
 
-      scene.addEventListener('pointermove', (e) => {
-        const r = scene.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width  - 0.5;
-        const y = (e.clientY - r.top)  / r.height - 0.5;
+      // Progressive enhancement only: bail on reduced motion / touch devices.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      const MAX_TILT = 9;         // degrees
+      let rect  = null;           // cached bounding box
+      let frame = null;           // pending rAF handle
+      let tx = 0, ty = 0;         // target rotation
+
+      function measure(){
+        rect = scene.getBoundingClientRect();
+      }
+
+      function apply(){
+        frame = null;
         card.style.transform =
-          `rotateY(${(x * 9).toFixed(2)}deg) rotateX(${(-y * 9).toFixed(2)}deg)`;
+          'rotateY(' + tx.toFixed(2) + 'deg) rotateX(' + ty.toFixed(2) + 'deg)';
+      }
+
+      scene.addEventListener('pointerenter', measure);
+
+      scene.addEventListener('pointermove', function (e) {
+        if (!rect) measure();
+        const nx = (e.clientX - rect.left) / rect.width  - 0.5;
+        const ny = (e.clientY - rect.top)  / rect.height - 0.5;
+        tx =  nx * MAX_TILT;
+        ty = -ny * MAX_TILT;
+        if (!frame) frame = requestAnimationFrame(apply);
       });
 
-      scene.addEventListener('pointerleave', () => {
+      scene.addEventListener('pointerleave', function () {
+        rect = null;
+        if (frame) { cancelAnimationFrame(frame); frame = null; }
         card.style.transform = '';
       });
+
+      // Invalidate the cached box on layout changes.
+      window.addEventListener('resize', function () { rect = null; }, { passive: true });
+      window.addEventListener('scroll', function () { rect = null; }, { passive: true });
     })();
   </script>
 
